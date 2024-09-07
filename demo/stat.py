@@ -19,5 +19,6 @@ key = 'tmp/t1.jpg'
 
 # 获取文件的状态信息
 ret, info = bucket.stat(bucket_name, key)
-print(info)
+print(ret)
+print(info.text_body)
 assert 'hash' in ret

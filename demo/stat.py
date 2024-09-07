@@ -15,7 +15,8 @@ bucket = BucketManager(q)
 
 # 你要测试的空间， 并且这个key在你空间中存在
 # bucket_name = 'Bucket_Name'
-key = 'tmp/t1.jpg'
+# key = 'tmp/t1.jpg'
+key = test_key
 
 # 获取文件的状态信息
 ret, info = bucket.stat(bucket_name, key)

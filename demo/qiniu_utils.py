@@ -7,6 +7,7 @@
 import hashlib
 import json
 import mimetypes
+import os.path
 
 import requests
 
@@ -33,6 +34,8 @@ access_key = qiniu_config['pic']['access_key']
 secret_key = qiniu_config['pic']['secret_key']
 bucket_name = qiniu_config['pic']['bucket']
 bucket_domain = 'https://s.laoyaoba.com'
+key_path = 'tmp2/'
+test_key = 'tmp2/01.jpeg'
 
 # 定义常见的 MIME 类型到扩展名的映射
 mime_extension_map = {
@@ -53,6 +56,20 @@ def is_valid_extension(extension):
     """
     valid_extensions = {'.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp', '.tiff'}
     return extension.lower() in valid_extensions
+
+
+def get_test_image(name):
+    fullname = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'docs/images/', name)
+    return fullname
+
+
+def get_project_path(filepath):
+    fullname = os.path.join(os.path.dirname(os.path.dirname(__file__)), filepath)
+    return fullname
+
+
+def get_key(key, path: str = None):
+    return os.path.join(key_path if path is None else path, key)
 
 
 def fetch_and_get_image_info(bucket_domain: str, key: str):

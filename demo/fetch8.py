@@ -6,15 +6,16 @@
 
 from demo.qiniu_utils import *
 
-
 from urllib.parse import urlparse, unquote
 import os
+
 
 def get_extension_from_url(url):
     parsed_url = urlparse(url)
     path = unquote(parsed_url.path)
     _, ext = os.path.splitext(path)
     return ext if ext else None
+
 
 # 示例
 url1 = "https://n.sinaimg.cn/spider20240906/562/w850h512/20240906/dd2b-08d321279244d3c6d2cf297b0f6ebe18.png"
@@ -48,4 +49,7 @@ def get_extension_from_url_or_content_type(url, default_extension='.jpg'):
 # 示例使用复杂 URL
 url2 = "https://p3-sign.toutiaoimg.com/tos-cn-i-axegupay5k/107b26b8f8334a148e4ad617cb5215aa~noop.image?_iz=58558&from=article.pc_detail&lk3s=953192f4&x-expires=1726319060&x-signature=TEqdxnhSt6%2FuK%2BbqK%2FSShUrOJCs%3D"
 extension = get_extension_from_url_or_content_type(url2)
+print(f"File extension is: {extension}")
+
+extension = get_extension_from_url_or_content_type(url1)
 print(f"File extension is: {extension}")

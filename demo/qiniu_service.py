@@ -3,6 +3,8 @@
 :author wjh
 :date 2024-09-07
 """
+import os.path
+
 from qiniu import Auth, BucketManager
 from demo.qiniu_utils import *
 
@@ -38,7 +40,8 @@ class QiniuService:
         result = []
         for image in images:
             # key = 'tmp/' + image.split('/')[-1]
-            key = 'tmp/' + calculate_md5(image) + '.png'
+            ext = get_extension_from_url(image, '.jpg')
+            key = get_key(calculate_md5(image) + ext)
 
             ret, info = self.bucket.fetch(image, bucket_name, key)  # type: dict, ResponseInfo
             assert info.status_code == 200, 'fetch is fail'

@@ -7,6 +7,8 @@ from qiniu.compat import is_py2, is_py3
 
 # 需要填写你的 Access Key 和 Secret Key
 from demo.qiniu_utils import *
+from demo.qiniu_utils import *
+
 # access_key = '...'
 # secret_key = '...'
 
@@ -17,13 +19,13 @@ q = Auth(access_key, secret_key)
 # bucket_name = ''
 
 # 上传到七牛后保存的文件名
-key = f'tmp/123.png'
+key = f'tmp2/123.png'
 
 # 生成上传 Token，可以指定过期时间等
 token = q.upload_token(bucket_name, key, 3600)
 
 # 要上传文件的本地路径
-localfile = r'D:\tmp\123.png'
+localfile = get_test_image('123.png')
 
 ret, info = put_file(token, key, localfile)
 print(ret)

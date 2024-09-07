@@ -34,6 +34,26 @@ secret_key = qiniu_config['pic']['secret_key']
 bucket_name = qiniu_config['pic']['bucket']
 bucket_domain = 'https://s.laoyaoba.com'
 
+# 定义常见的 MIME 类型到扩展名的映射
+mime_extension_map = {
+    'image/jpeg': '.jpg',
+    'image/png': '.png',
+    'image/gif': '.gif',
+    'image/webp': '.webp',
+    'image/bmp': '.bmp',
+    'image/tiff': '.tiff',
+}
+
+
+def is_valid_extension(extension):
+    """
+    判断扩展名是否有效（是否是常见图片格式）
+    :param str extension: 文件扩展名
+    :return: True 表示有效，False 表示无效
+    """
+    valid_extensions = {'.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp', '.tiff'}
+    return extension.lower() in valid_extensions
+
 
 def fetch_and_get_image_info(bucket_domain: str, key: str):
     """

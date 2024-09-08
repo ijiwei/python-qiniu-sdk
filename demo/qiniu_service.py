@@ -36,12 +36,12 @@ class QiniuService:
         self.q = q
         self.bucket = bucket
 
-    def fetch_image(self, images: list):
+    def fetch_image(self, images: list, path: str = None):
         result = []
         for image in images:
             # key = 'tmp/' + image.split('/')[-1]
             ext = get_extension_from_url(image, '.jpg')
-            key = get_key(calculate_md5(image) + ext)
+            key = get_key(calculate_md5(image) + ext, path)
 
             ret, info = self.bucket.fetch(image, bucket_name, key)  # type: dict, ResponseInfo
             assert info.status_code == 200, 'fetch is fail'

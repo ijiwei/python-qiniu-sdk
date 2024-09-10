@@ -16,13 +16,27 @@ url = 'https://mp.weixin.qq.com/s?__biz=MzIxODI2NTY4OQ==&mid=2247523746&idx=1&sn
 
 content_xpath = '//div[@id="js_content" or @id="js_share_notice" or @class="wx_video_play_opr" or @class="rich_media_content"]'
 
+if os.name == "nt":  # window
+    firefox_binary_location = r"C:\Program Files\Mozilla Firefox\firefox.exe"
+    firefox_executable_path = r"C:\Windows\System32\geckodriver.exe"
+
+    chrome_binary_location = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
+    chrome_executable_path = r"C:\Windows\System32\chromedriver.exe"
+
+else:  # linux
+    firefox_binary_location = "/usr/bin/firefox"
+    firefox_executable_path = "/usr/local/bin/geckodriver"
+
+    chrome_binary_location = "/usr/bin/google-chrome"
+    chrome_executable_path = "/usr/local/bin/chromedriver"
+
 
 def get_webdriver():
     opt = webdriver.ChromeOptions()
     opt.add_argument("no-sandbox")
     opt.add_argument("--disable-extensions")
     # opt.add_argument("--headless")
-    return webdriver.Chrome(executable_path="/usr/local/bin/chromedriver", options=opt)
+    return webdriver.Chrome(executable_path=chrome_executable_path, options=opt)
 
 
 def get_gzh_images(webdriver, xpath: str):
@@ -33,12 +47,8 @@ def get_gzh_images(webdriver, xpath: str):
         driver = webdriver
 
     driver.get(url)
-
-    # write_text_to_file("1.thml", driver.page_source)
-    element = driver.find_element(By.XPATH, xpath)
-
     result = []
-    images = element.find_elements(By.XPATH, './/img')
+    images = driver.find_elements(By.XPATH, xpath)
     for image in images:
         html = image.get_attribute('outerHTML')
         src = image.get_attribute('src')
@@ -54,7 +64,7 @@ def get_gzh_images(webdriver, xpath: str):
     return result
 
 
-list = get_gzh_images(None, content_xpath)
+list = get_gzh_images(None, content_xpath + '//img')
 
 print(list)
 
@@ -62,11 +72,11 @@ from demo.qiniu_utils import *
 from demo.qiniu_service import QiniuService
 
 qs = QiniuService(name='pic')
-data = qs.fetch_image(list, 'tmp2/gzh2/')
+data = qs.fetch_image(list, 'tmp2/gzh3/')
 print(data)
 
 # filter
-data = [image for image in data if image.get('meta', {}).get('width', 0) > 100]
+data = [image for image in data if image.get('meta', {}).get('width', 0) > 100 and image.get('meta', {}).get('height', 0) > 100]
 print(data)
 
 # 测试上提交
